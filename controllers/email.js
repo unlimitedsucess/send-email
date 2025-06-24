@@ -101,7 +101,24 @@ exports.postEmail = async (req, res, next) => {
             "number.positive": "Amount must be positive",
             "any.required": "Amount is required",
           }),
+          sku: Joi.string().trim().required().messages({
+            "string.empty": "SKU is required",
+          }),
+          warranty: Joi.string().trim().required().messages({
+            "string.empty": "Warranty is required",
+          }),
 
+          fuentea: Joi.string().trim().required().messages({
+            "string.empty": "Fuente is required",
+          }),
+
+          aduana: Joi.string().trim().required().messages({
+            "string.empty": "Aduana is required",
+          }),
+
+          cable: Joi.string().trim().messages({
+            "string.empty": "Cable cannot be an empty string",
+          }),
           quantity: Joi.number().integer().positive().required().messages({
             "number.base": "Quantity must be a number",
             "number.integer": "Quantity must be an integer",
