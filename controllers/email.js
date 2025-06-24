@@ -236,7 +236,7 @@ exports.postEmail = async (req, res, next) => {
                       </span>
                     </td>
                     <td width="50%" valign="top" align="right" style="font-size: 14px;">
-                      <strong>Date:</strong> ${formatTodayDate}<br />
+                      <strong>Date:</strong> ${formatTodayDate()}<br />
                       <strong>Total:</strong> $${total}<br />
                       <strong>Products:</strong> ${products.length}
                     </td>
