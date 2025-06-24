@@ -167,6 +167,21 @@ exports.postEmail = async (req, res, next) => {
       products,
     } = value;
 
+    const orderId = generateOrderId();
+
+    const whatsappMessage = `Hello sir, I would like to proceed with the payment for these items:\n\n${products
+      .map(
+        (p, index) =>
+          `${index + 1}. ${p.productName} (x${p.quantity}) = $${
+            p.amount * p.quantity
+          }`
+      )
+      .join("\n")}\n\nTotal: $${total}\nOrder ID: ${orderId}`;
+
+    const encodedWhatsAppMessage = encodeURIComponent(whatsappMessage);
+
+    const whatsappLink = `https://wa.me/17023197242?text=${encodedWhatsAppMessage}`;
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       host: "smtp.gmail.com",
@@ -179,8 +194,8 @@ exports.postEmail = async (req, res, next) => {
     });
 
     const sendMail = async (mailDetails) => {
-     const check = await transporter.sendMail(mailDetails);
-     console.log(check);
+      const check = await transporter.sendMail(mailDetails);
+      console.log(check);
     };
 
     const message = `Please do not disclose this code`;
@@ -244,7 +259,7 @@ exports.postEmail = async (req, res, next) => {
                 </table>
 
                 <h3 style="margin: 25px 0 10px;">Estimate</h3>
-                <p style="margin: 0;"><strong>Order ID:</strong> ${generateOrderId()}</p>
+                <p style="margin: 0;"><strong>Order ID:</strong> ${orderId}</p>
                 <p style="margin: 5px 0 15px;"><strong>Additional Notes:</strong> ${additionalNote}</p>
 
                 <!-- Items Table -->
@@ -289,9 +304,10 @@ exports.postEmail = async (req, res, next) => {
 
                 <!-- Proceed Button -->
                 <div style="text-align: center; padding-top: 25px;">
-                  <a href="https://t.me/Xportchina_exclusivo/checkout?order=BAC35" style="display: inline-block; padding: 12px 24px; background-color: #e10600; color: #ffffff; text-decoration: none; border-radius: 4px; font-size: 16px; font-weight: bold;">
-                    Proceed to Payment
-                  </a>
+                 <a href="${whatsappLink}" style="display: inline-block; padding: 12px 24px; background-color: #25D366; color: #ffffff; text-decoration: none; border-radius: 4px; font-size: 16px; font-weight: bold;">
+  Proceed to Payment
+</a>
+
                 </div>
               </td>
             </tr>
