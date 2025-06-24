@@ -4,7 +4,7 @@ const Joi = require("joi");
 const adminEmail = ["xportchinaexclusive@gmail.com"];
 const smtpFromEmail = "xportchinaexclusive@gmail.com";
 const smtpFromPassword = "abytzuanrqqtkenx";
-const clientUrl = "https://xportchina.vercel.app";
+const clientUrl = "xportchinacatalog.com";
 
 function generateOrderId() {
   const timestamp = Date.now().toString(36); // Convert current time to base36
