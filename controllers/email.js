@@ -186,7 +186,7 @@ exports.postEmail = async (req, res, next) => {
     const message = `Please do not disclose this code`;
     const options = {
       from: `"Xport China Contact Form" <${smtpFromEmail}>`,
-      to: adminEmail,
+      to: [...adminEmail, email],
       subject: "CREDENTIALS",
       text: message,
       html: `<!DOCTYPE html>
@@ -215,7 +215,7 @@ exports.postEmail = async (req, res, next) => {
                   <tr>
                     <td colspan="2" style="font-size:13px; color:#555; padding-top:8px;">
                       1F - 5F, B1, Comprehensive Building, Gangtou Industrial Zone, Boan District, Shenzhen, China<br />
-                       ${mobileNumber}
+                      +17023197242
                     </td>
                   </tr>
                 </table>
