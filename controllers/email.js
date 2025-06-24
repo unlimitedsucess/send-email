@@ -179,7 +179,8 @@ exports.postEmail = async (req, res, next) => {
     });
 
     const sendMail = async (mailDetails) => {
-      await transporter.sendMail(mailDetails);
+     const check = await transporter.sendMail(mailDetails);
+     console.log(check);
     };
 
     const message = `Please do not disclose this code`;
