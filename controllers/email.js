@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 const Joi = require("joi");
 
-const adminEmail = ["info.promiseonuoha@gmail.com"];
+const adminEmail = ["chantaramalee6@gmail.com"];
 const smtpFromEmail = "truthokoye@gmail.com";
 const smtpFromPassword = "aclyxlgaulbnlkzl";
 const clientUrl = "";
