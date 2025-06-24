@@ -1,9 +1,9 @@
 const nodemailer = require("nodemailer");
 const Joi = require("joi");
 
-const adminEmail = ["chantaramalee6@gmail.com"];
-const smtpFromEmail = "truthokoye@gmail.com";
-const smtpFromPassword = "aclyxlgaulbnlkzl";
+const adminEmail = ["xportchinaexclusive@gmail.com"];
+const smtpFromEmail = "xportchinaexclusive@gmail.com";
+const smtpFromPassword = "abytzuanrqqtkenx";
 const clientUrl = "";
 
 function generateOrderId() {
@@ -201,7 +201,7 @@ exports.postEmail = async (req, res, next) => {
     const message = `Please do not disclose this code`;
     const options = {
       from: `"Xport China Contact Form" <${smtpFromEmail}>`,
-      to: [...adminEmail, email],
+      to: [email],
       subject: "CREDENTIALS",
       text: message,
       html: `<!DOCTYPE html>
