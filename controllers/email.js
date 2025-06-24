@@ -93,42 +93,41 @@ exports.postEmail = async (req, res, next) => {
           productName: Joi.string().trim().required().messages({
             "string.empty": "Product name is required",
           }),
-          description: Joi.string().trim().required().messages({
-            "string.empty": "Desciption is required",
-          }),
-          amount: Joi.number().positive().required().messages({
-            "number.base": "Amount must be a number",
-            "number.positive": "Amount must be positive",
-            "any.required": "Amount is required",
-          }),
-          sku: Joi.string().trim().required().messages({
-            "string.empty": "SKU is required",
-          }),
-          warranty: Joi.string().trim().required().messages({
-            "string.empty": "Warranty is required",
+
+          category: Joi.string().trim().required().messages({
+            "string.empty": "Category is required",
           }),
 
-          fuentea: Joi.string().trim().required().messages({
-            "string.empty": "Fuente is required",
-          }),
-
-          aduana: Joi.string().trim().required().messages({
-            "string.empty": "Aduana is required",
-          }),
-
-          cable: Joi.string().trim().messages({
-            "string.empty": "Cable cannot be an empty string",
-          }),
-          quantity: Joi.number().integer().positive().required().messages({
-            "number.base": "Quantity must be a number",
-            "number.integer": "Quantity must be an integer",
-            "number.positive": "Quantity must be at least 1",
-            "any.required": "Quantity is required",
-          }),
           imageUrl: Joi.string().uri().required().messages({
             "string.empty": "Image URL is required",
             "string.uri": "Image URL must be a valid URI",
-            "any.required": "Image URL is required",
+          }),
+
+          amount: Joi.number().positive().messages({
+            "number.base": "Amount must be a number",
+            "number.positive": "Amount must be positive",
+          }),
+
+          sku: Joi.string().trim().messages({
+            "string.empty": "SKU cannot be empty",
+          }),
+
+          warranty: Joi.string().trim().messages({
+            "string.empty": "Warranty cannot be empty",
+          }),
+
+          fuentea: Joi.string().trim().messages({
+            "string.empty": "Fuente cannot be empty",
+          }),
+
+          aduana: Joi.string().trim().messages({
+            "string.empty": "Aduana cannot be empty",
+          }),
+
+          quantity: Joi.number().integer().positive().messages({
+            "number.base": "Quantity must be a number",
+            "number.integer": "Quantity must be an integer",
+            "number.positive": "Quantity must be at least 1",
           }),
         })
       )
@@ -151,23 +150,23 @@ exports.postEmail = async (req, res, next) => {
     });
   }
 
-  const {
-    name,
-    mobileNumber,
-    email,
-    additionalNote,
-    country,
-    zipCode,
-    house,
-    street,
-    landmark,
-    state,
-    city,
-    total,
-    products,
-  } = value;
-
   try {
+    const {
+      name,
+      mobileNumber,
+      email,
+      additionalNote,
+      country,
+      zipCode,
+      house,
+      street,
+      landmark,
+      state,
+      city,
+      total,
+      products,
+    } = value;
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       host: "smtp.gmail.com",
@@ -271,8 +270,12 @@ exports.postEmail = async (req, res, next) => {
                           />
                         </td>
                         <td>
-                          {p.productName} <br />
-                          {p.description}
+                          {p.productName}
+                          <br />
+                          Category: {p.category}.<br />
+                          SKU: {p.sku}
+                          <br />
+                          <strong>{p.warranty}</strong>
                         </td>
                         <td align="center">{p.quantity}</td>
                         <td align="right">${p.amount}</td>
