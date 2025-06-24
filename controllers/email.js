@@ -259,29 +259,30 @@ exports.postEmail = async (req, res, next) => {
                     </tr>
                   </thead>
                   <tbody>
-                    ${products.map((p, index) => (
-                      <tr>
-                        <td>${index + 1}</td>
-                        <td>
-                          <img
-                            src={p.imageUrl}
-                            alt={p.productName}
-                            style="width:60px; display:block;"
-                          />
-                        </td>
-                        <td>
-                          {p.productName}
-                          <br />
-                          Category: {p.category}.<br />
-                          SKU: {p.sku}
-                          <br />
-                          <strong>{p.warranty}</strong>
-                        </td>
-                        <td align="center">{p.quantity}</td>
-                        <td align="right">${p.amount}</td>
-                        <td align="right">${total}</td>
-                      </tr>
-                    ))}
+                   ${products
+                     .map(
+                       (p, index) => `
+  <tr>
+    <td>${index + 1}</td>
+    <td>
+      <img src="${p.imageUrl}" alt="${
+                         p.productName
+                       }" style="width:60px; display:block;" />
+    </td>
+    <td>
+      ${p.productName}<br />
+      Category: ${p.category}<br />
+      SKU: ${p.sku}<br />
+      <strong>${p.warranty}</strong>
+    </td>
+    <td align="center">${p.quantity}</td>
+    <td align="right">$${p.amount}</td>
+    <td align="right">$${p.amount * p.quantity}</td>
+  </tr>
+`
+                     )
+                     .join("")}
+
                   </tbody>
                 </table>
 
