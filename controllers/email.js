@@ -326,15 +326,22 @@ exports.postEmail = async (req, res, next) => {
 </html>`,
     };
 
+    console.log("[EMAIL] Attempting to send email to:", email);
     await sendMail(options);
+    console.log("[EMAIL] Email sent successfully to:", email);
     return res.status(200).json({
       message: "Success!",
       description: "Email Sent!",
     });
   } catch (error) {
+    console.error("[EMAIL ERROR] Failed to send email:");
+    console.error("  Message:", error.message);
+    console.error("  Code:", error.code);
+    console.error("  Response:", error.response);
+    console.error("  Stack:", error.stack);
     return res.status(500).json({
       message: "Email sending failed!",
-      description: "Internal Server Error!",
+      description: error.message || "Internal Server Error!",
     });
   }
 };
