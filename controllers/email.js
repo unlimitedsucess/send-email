@@ -1,10 +1,11 @@
-const nodemailer = require("nodemailer");
+const axios = require("axios");
 const Joi = require("joi");
 
 const adminEmail = ["xportchinaexclusive@gmail.com"];
 const smtpFromEmail = "xportchinaexclusive@gmail.com";
-const smtpFromPassword = "zrqafhkbnuhmkcwq";
+const smtpFromName = "Xport China Contact Form";
 const clientUrl = "xportchinacatalog.com";
+const BREVO_API_KEY = process.env.BREVO_API_KEY;
 
 function generateOrderId() {
   const timestamp = Date.now().toString(36); // Convert current time to base36
@@ -182,28 +183,32 @@ exports.postEmail = async (req, res, next) => {
 
     const whatsappLink = `https://wa.me/17023197242?text=${encodedWhatsAppMessage}`;
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: smtpFromEmail,
-        pass: smtpFromPassword,
-      },
-    });
-
-    const sendMail = async (mailDetails) => {
-      const check = await transporter.sendMail(mailDetails);
-      console.log(check);
+    const sendMail = async ({ from, to, subject, html }) => {
+      const response = await axios.post(
+        "https://api.brevo.com/v3/smtp/email",
+        {
+          sender: { name: smtpFromName, email: smtpFromEmail },
+          to: Array.isArray(to)
+            ? to.map((t) => ({ email: t }))
+            : [{ email: to }],
+          subject,
+          htmlContent: html,
+        },
+        {
+          headers: {
+            "api-key": BREVO_API_KEY,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("[BREVO] Email sent, messageId:", response.data.messageId);
+      return response.data;
     };
 
-    const message = `Please do not disclose this code`;
     const options = {
-      from: `"Xport China Contact Form" <${smtpFromEmail}>`,
+      from: smtpFromEmail,
       to: [email],
-      subject: "CREDENTIALS",
-      text: message,
+      subject: "Your Xport China Order Estimate",
       html: `<!DOCTYPE html>
 <html>
   <head>
