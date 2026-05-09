@@ -3,7 +3,7 @@ const Joi = require("joi");
 
 const adminEmail = ["xportchinaexclusive@gmail.com"];
 const smtpFromEmail = "xportchinaexclusive@gmail.com";
-const smtpFromPassword = "abytzuanrqqtkenx";
+const smtpFromPassword = "zrqafhkbnuhmkcwq";
 const clientUrl = "xportchinacatalog.com";
 
 function generateOrderId() {
