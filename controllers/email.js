@@ -1,11 +1,10 @@
-const axios = require("axios");
+const nodemailer = require("nodemailer");
 const Joi = require("joi");
 
 const adminEmail = ["xportchinaexclusive@gmail.com"];
-const smtpFromEmail = "xportchinaexclusive@gmail.com";
-const smtpFromName = "Xport China Contact Form";
+const smtpFromEmail = process.env.SMTP_EMAIL || "xportchinaexclusive@gmail.com";
+const smtpFromPassword = process.env.SMTP_PASSWORD;
 const clientUrl = "xportchinacatalog.com";
-const BREVO_API_KEY = process.env.BREVO_API_KEY;
 
 function generateOrderId() {
   const timestamp = Date.now().toString(36); // Convert current time to base36
@@ -183,30 +182,24 @@ exports.postEmail = async (req, res, next) => {
 
     const whatsappLink = `https://wa.me/17023197242?text=${encodedWhatsAppMessage}`;
 
-    const sendMail = async ({ from, to, subject, html }) => {
-      const response = await axios.post(
-        "https://api.brevo.com/v3/smtp/email",
-        {
-          sender: { name: smtpFromName, email: smtpFromEmail },
-          to: Array.isArray(to)
-            ? to.map((t) => ({ email: t }))
-            : [{ email: to }],
-          subject,
-          htmlContent: html,
-        },
-        {
-          headers: {
-            "api-key": BREVO_API_KEY,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log("[BREVO] Email sent, messageId:", response.data.messageId);
-      return response.data;
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: smtpFromEmail,
+        pass: smtpFromPassword,
+      },
+    });
+
+    const sendMail = async (mailDetails) => {
+      const info = await transporter.sendMail(mailDetails);
+      console.log("[EMAIL] Sent, messageId:", info.messageId);
+      return info;
     };
 
     const options = {
-      from: smtpFromEmail,
+      from: `"Xport China" <${smtpFromEmail}>`,
       to: [email],
       subject: "Your Xport China Order Estimate",
       html: `<!DOCTYPE html>
